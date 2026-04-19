@@ -60,7 +60,7 @@ LOOKUP_REQUIRED = {"match_key", "normalized_type", "category", "tag1", "tag2", "
 ALIAS_REQUIRED = {"raw_value", "match_key"}
 DATA_REQUIRED = {"$ICAO", "$Registration", "$Operator", "$Type", "$ICAO Type", "#CMPG", "Category"}
 
-MATCHKEY_RE = re.compile(r"^[A-Z0-9]{2,5}$")
+MATCHKEY_RE = re.compile(r"^[A-Z0-9]{2,5}$")  # ICAO type designator: 2–5 uppercase alphanumeric chars
 WS_RE = re.compile(r"\s+")
 
 

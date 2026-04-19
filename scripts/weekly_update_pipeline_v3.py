@@ -127,10 +127,10 @@ def main() -> int:
     )
     refs_changed = aliases_changed or lookup_changed
 
-    _SKIP_DATA_STEMS = {"plane-alert-categories", "plane-alert-search-terms-to-do"}
+    SKIP_DATA_STEMS = {"plane-alert-categories", "plane-alert-search-terms-to-do"}
     plane_files = sorted(
         f for f in ws.glob("data/plane-alert-*.csv")
-        if f.stem not in _SKIP_DATA_STEMS
+        if f.stem not in SKIP_DATA_STEMS
     )
     refreshed = 0
     if refs_changed or args.force_refresh:
