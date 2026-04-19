@@ -17,6 +17,11 @@ from typing import Dict, List, Optional, Tuple
 # - Applies allowlist + explicit blacklist + pattern blacklist for Category and tags
 # - Optional batch mode with glob patterns
 # - Writes a compact run summary to stdout
+#
+# NOTE: The '#CMPG' column (Mil / Civ / Gov / Pol operator-type split) is
+#       intentionally left unchanged by this normalizer.  It is orthogonal to
+#       the aviation taxonomy and is used by create_db_derivatives.py to
+#       generate the derivative CSV files (plane-alert-mil.csv, etc.).
 
 ALLOWED_CATEGORIES = {
     "Tactical Airlift",
@@ -309,7 +314,7 @@ def invalid_text_reason(value: str, allowed: Optional[set] = None) -> Optional[s
             return "pattern_blacklist"
     if PHRASEY_RE.search(raw):
         return "long_phrase_or_reference"
-    return None if (allowed is not None and raw in allowed) else "not_in_allowlist"
+    return "not_in_allowlist"
 
 
 def resolve_category(original: str, lookup_category: str) -> Tuple[str, str, str]:
@@ -339,11 +344,8 @@ def resolve_tag(original: str, lookup_value: str, allowed: set, field_name: str)
     if lookup_value in allowed:
         return lookup_value, "overwritten_from_lookup", reason or f"invalid_{field_name}"
 
-    # If original is invalid and lookup does not rescue it, blank it and review.
-    if reason is not None or original not in allowed:
-        return "", "review_required", reason or f"not_in_{field_name}_allowlist"
-
-    return original, "kept_existing", "fallback"
+    # If original is invalid and lookup does not rescue it, blank it.
+    return "", "review_required", reason or f"not_in_{field_name}_allowlist"
 
 
 def match_lookup(row: Dict[str, str], lookup: Dict[str, Dict[str, str]], aliases: Dict[str, str]) -> Tuple[Optional[Dict[str, str]], str, str]:
@@ -384,8 +386,10 @@ def infer_mission_override(row: Dict[str, str]) -> str:
     return ""
 
 
-def ensure_fieldnames(reader_fieldnames: List[str]) -> List[str]:
+def ensure_fieldnames(reader_fieldnames: List[str], include_audit: bool = True) -> List[str]:
     base = list(reader_fieldnames)
+    if not include_audit:
+        return base
     extras = [
         "Normalized Type",
         "Mission Override",
@@ -408,7 +412,7 @@ def ensure_fieldnames(reader_fieldnames: List[str]) -> List[str]:
     return base
 
 
-def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Dict[str, str], keep_link: bool = False) -> Tuple[str, str, Dict[str, int]]:
+def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Dict[str, str], keep_link: bool = False, no_audit_cols: bool = False) -> Tuple[str, str, Dict[str, int]]:
     delimiter = detect_delimiter(input_path)
     output_path, review_path = get_output_paths(input_path)
     stats = {
@@ -430,7 +434,7 @@ def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Di
         if not reader.fieldnames:
             raise ValueError(f"No header row found in {input_path}")
 
-        fieldnames = ensure_fieldnames(reader.fieldnames)
+        fieldnames = ensure_fieldnames(reader.fieldnames, include_audit=not no_audit_cols)
         if not keep_link and "$#Link" in fieldnames:
             fieldnames.remove("$#Link")
 
@@ -491,7 +495,10 @@ def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Di
             row["Tag 3 Status"] = tag3_status
             row["Tag 3 Reason"] = tag3_reason
 
-            rescued_all = all([
+            # A row is written to the normalized output when its category is
+            # resolved to a valid taxonomy value.  Confidence reflects how
+            # completely the row was filled in from the lookup table.
+            fully_resolved = all([
                 final_category,
                 final_tag1,
                 final_tag2,
@@ -499,9 +506,14 @@ def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Di
                 bool(normalized_type),
             ])
 
-            if rescued_all and match:
+            if final_category:
                 row["Normalization Status"] = "normalized"
-                row["Normalization Confidence"] = "high"
+                if fully_resolved and match:
+                    row["Normalization Confidence"] = "high"
+                elif match:
+                    row["Normalization Confidence"] = "medium"
+                else:
+                    row["Normalization Confidence"] = "low"
                 writer.writerow(row)
                 stats["rows_normalized"] += 1
             else:
@@ -538,6 +550,8 @@ def main() -> int:
     parser.add_argument("--lookup", required=True, help="Verified lookup CSV/TSV")
     parser.add_argument("--aliases", help="Aliases CSV/TSV")
     parser.add_argument("--keep-link", action="store_true", help="Keep $#Link column in outputs")
+    parser.add_argument("--no-audit-cols", action="store_true",
+                        help="Suppress the 13 diagnostic audit columns from outputs (suitable for production CSV)")
     args = parser.parse_args()
 
     try:
@@ -565,7 +579,7 @@ def main() -> int:
 
     for path in files:
         try:
-            output_path, review_path, stats = process_file(path, lookup, aliases, keep_link=args.keep_link)
+            output_path, review_path, stats = process_file(path, lookup, aliases, keep_link=args.keep_link, no_audit_cols=args.no_audit_cols)
         except Exception as exc:
             print(f"ERROR processing {path}: {exc}", file=sys.stderr)
             continue
