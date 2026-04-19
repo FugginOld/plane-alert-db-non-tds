@@ -434,7 +434,7 @@ def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Di
         if not reader.fieldnames:
             raise ValueError(f"No header row found in {input_path}")
 
-        fieldnames = ensure_fieldnames(reader.fieldnames, include_audit=not no_audit_cols)
+        fieldnames = ensure_fieldnames(list(reader.fieldnames), include_audit=not no_audit_cols)
 
         writer = csv.DictWriter(outfile, fieldnames=fieldnames, delimiter=delimiter, extrasaction="ignore")
         review_writer = csv.DictWriter(reviewfile, fieldnames=fieldnames, delimiter=delimiter, extrasaction="ignore")

@@ -38,15 +38,18 @@ if __name__ == "__main__":
     logging.info("Changed files retrieved successfully.")
 
     logging.info("Setting result as github action output...")
-    if changed_files:
-        logging.info("Invalid derivative files found.")
-        logging.info(f"Invalid derivative files: {changed_files}")
-        with open(OUTPUT_FILE, "a") as fh:
-            print(
-                "derivatives_changed={}".format(str(len(["test"]) >= 1).lower()),
-                file=fh,
-            )
+    if OUTPUT_FILE is not None:
+        if changed_files:
+            logging.info("Invalid derivative files found.")
+            logging.info(f"Invalid derivative files: {changed_files}")
+            with open(OUTPUT_FILE, "a") as fh:
+                print(
+                    "derivatives_changed={}".format(str(len(["test"]) >= 1).lower()),
+                    file=fh,
+                )
+        else:
+            logging.info("No invalid derivative files found.")
+            with open(OUTPUT_FILE, "a") as fh:
+                print("derivatives_changed=false", file=fh)
     else:
-        logging.info("No invalid derivative files found.")
-        with open(OUTPUT_FILE, "a") as fh:
-            print("derivatives_changed=false", file=fh)
+        logging.warning("GITHUB_OUTPUT environment variable is not set. Skipping output file write.")

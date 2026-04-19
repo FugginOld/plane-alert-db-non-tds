@@ -108,7 +108,7 @@ if __name__ == "__main__":
     logging.info("Checking the main database...")
     try:
         main_df = pd.read_csv(MAIN_DATABASE_NAME)
-        main_df.name = MAIN_DATABASE_NAME
+        main_df_db_name = MAIN_DATABASE_NAME
     except Exception as e:
         logging.error(f"The '{MAIN_DATABASE_NAME}' database is not a valid CSV.")
         sys.stdout.write(

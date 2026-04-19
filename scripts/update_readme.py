@@ -24,21 +24,21 @@ if __name__ == "__main__":
 
     logging.info("Generating Counts to update README.md via mustache template.")
 
-with open("readme.mustache", "r") as template:
-    with open("README.md", "w") as output:
-        output.write(
-            chevron.render(
-                template,
-                {
-                    "planes": plane_count_df.shape[0],
-                    "categories": category_unique_df.shape[0],
-                    "plane_alert_db": df.shape[0],
-                    "plane_alert_pia": pia_df.shape[0],
-                    "civ_count": df[df["#CMPG"] == "Civ"].shape[0],
-                    "mil_count": df[df["#CMPG"] == "Mil"].shape[0],
-                    "pol_count": df[df["#CMPG"] == "Pol"].shape[0],
-                    "gov_count": df[df["#CMPG"] == "Gov"].shape[0],
-                },
+    with open("readme.mustache", "r") as template:
+        with open("README.md", "w") as output:
+            output.write(
+                chevron.render(
+                    template,
+                    {
+                        "planes": plane_count_df.shape[0],
+                        "categories": category_unique_df.shape[0],
+                        "plane_alert_db": df.shape[0],
+                        "plane_alert_pia": pia_df.shape[0],
+                        "civ_count": df[df["#CMPG"] == "Civ"].shape[0],
+                        "mil_count": df[df["#CMPG"] == "Mil"].shape[0],
+                        "pol_count": df[df["#CMPG"] == "Pol"].shape[0],
+                        "gov_count": df[df["#CMPG"] == "Gov"].shape[0],
+                    },
+                )
             )
-        )
-    logging.info("Counts output to README.md via 'readme.mustache' template.")
+        logging.info("Counts output to README.md via 'readme.mustache' template.")
