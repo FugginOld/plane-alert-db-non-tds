@@ -12,23 +12,6 @@ logging.basicConfig(
 )
 
 MAIN_DATABASE_NAME = "plane-alert-db.csv"
-PLANE_IMAGES_DATABASE_NAME = "plane_images.csv"
-
-
-def is_valid_url(url, allow_nans=False):
-    """Check if a URL starts with http or https.
-
-    Args:
-        url (str): The URL to check.
-        allow_nans (bool, optional): If True, NaN values will be considered valid.
-            Defaults to False.
-
-    Returns:
-        boolean: True if the URL starts with http or https, False otherwise.
-    """
-    if pd.isna(url):
-        return True if allow_nans and pd.isna(url) else False
-    return True if url.startswith(("http://", "https://")) else False
 
 
 def is_hex(string):
@@ -90,30 +73,6 @@ def contains_duplicate_regs(df):
         sys.exit(1)
 
 
-def contains_bad_links(df, allow_nans=False):
-    """Check if the database has any links that don't start with http or https.
-
-    Args:
-        df (pandas.Dataframe): The database to check.
-        allow_nans (bool, optional): If True, NaN values will be considered valid.
-            Defaults to False.
-
-    Raises:
-        Exception: When the database has invalid links.
-    """
-    bad_links = df[~df["$#Link"].apply(is_valid_url, allow_nans).astype(bool)][
-        ["$ICAO", "$#Link"]
-    ].fillna("")
-    if len(bad_links) > 0:
-        db_name = df.name if hasattr(df, "name") else "database"
-        logging.error(f"The '{db_name}' database has invalid links.")
-        sys.stdout.write(
-            f"The '{db_name} database has '{bad_links.shape[0]}' invalid links:\n"
-            f"{bad_links.to_string(index=False)}\n"
-        )
-        sys.exit(1)
-
-
 def contains_valid_ICAO_hexes(df):
     """Check if all the values in the '$ICAO' data series are hexidecimal strings.
 
@@ -165,45 +124,4 @@ if __name__ == "__main__":
     # contains_duplicate_regs(
     #     main_df
     # )  # NOTE: This is commented out because there are duplicates.
-    # contains_bad_links(main_df)
     logging.info("The main database is valid.")
-
-
-    ##########################################
-    # Check 'plane_images.csv' db.           #
-    ##########################################
-    logging.info("Checking the 'plane_images.csv' database...")
-    try:
-        images_df = pd.read_csv(PLANE_IMAGES_DATABASE_NAME)
-        images_df.name = PLANE_IMAGES_DATABASE_NAME
-    except Exception as e:
-        logging.error(
-            f"The '{PLANE_IMAGES_DATABASE_NAME}' database is not a valid CSV."
-        )
-        sys.stdout.write(
-            f"The '{PLANE_IMAGES_DATABASE_NAME}' database is not a valid CSV: {e}\n"
-        )
-        sys.exit(1)
-
-    # Perform database checks.
-    contains_duplicate_ICAOs(images_df)
-    bad_links = pd.DataFrame()
-    for col in images_df.columns:  # Check all link columns for bad links.
-        if col != "$ICAO":
-            bad_links = pd.concat(
-                [
-                    bad_links,
-                    images_df[
-                        ~images_df[col]
-                        .apply(is_valid_url, allow_nans=True)
-                        .astype(bool)
-                    ],
-                ]
-            )
-    if len(bad_links) > 0:
-        logging.error("The 'plane_images.csv' database has invalid links.")
-        sys.stdout.write(
-            f"The 'plane_images.csv' database has invalid links: {bad_links}\n"
-        )
-        sys.exit(1)
-    logging.info("The 'plane_images.csv' database is valid.")

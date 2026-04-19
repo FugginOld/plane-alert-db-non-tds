@@ -30,13 +30,59 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 
 ## Important Development Notes
 
-### Database Updates
+### Aviation-taxonomy Categories and Tags
 
-Refer to the [README](README.md) for details on contributing to the following main databases:
+New entries in `plane-alert-db.csv` must use the structured aviation-taxonomy values defined below. The old personality / group-category system (USAF, Zoomies, Toy Soldiers, etc.) has been replaced.
+
+**`Category`** — pick exactly one of the 24 taxonomy values:
+
+| Category | Typical aircraft |
+|---|---|
+| AEW&C | E-3 Sentry, E-2 Hawkeye, A-50 |
+| Attack / Strike | A-10, B-52, B-1B, AV-8B |
+| Business Jet | Gulfstream, Learjet, Falcon, Challenger |
+| Cargo Freighter | Dedicated cargo variants |
+| Electronic Warfare | EA-18G, Tornado ECR, EC-130H |
+| Fighter / Interceptor | F-16, F-15, Eurofighter, Gripen |
+| Helicopter - Attack | AH-64 Apache |
+| Helicopter - Maritime | Lynx, Merlin, Ka-27 |
+| Helicopter - Transport | UH-60, CH-47, NH90, Mi-17 |
+| Helicopter - Utility | EC135, Bell 206/407, Bo 105 |
+| ISR / Surveillance | U-2, RC-135, E-8, Il-20 |
+| Maritime Patrol | P-8, P-3, Atlantique |
+| Passenger - Narrowbody | A320 family, 737 family |
+| Passenger - Widebody | A330/340, 747, 767, 777, 787 |
+| Regional Passenger | ERJ, CRJ, DHC-8, SAAB 340 |
+| Special Mission | CL-415, C-2, V-22, historic warbirds |
+| Strategic Airlift | C-17, C-5, An-124, Il-76 |
+| Tactical Airlift | C-130, A400M, C-27J, C-295 |
+| Tanker | KC-135, KC-10, KC-46 |
+| Trainer | T-38, PC-21, T-6, Alpha Jet |
+| UAV - Combat | Armed UAVs |
+| UAV - Recon | MQ-4C Triton, RQ-7 Shadow |
+| UAV - Utility | Logistics / utility UAVs |
+| Utility | King Air, PC-12, Caravan, light aircraft |
+
+**`$Tag 1`** — primary mission (choose one, or leave blank):
+`Tactical Transport`, `Strategic Transport`, `Maritime Patrol`, `ISR`, `Early Warning`,
+`Air Superiority`, `Strike`, `Close Air Support`, `Refueling`, `Training`, `Utility`, `Electronic Warfare`
+
+**`$#Tag 2`** — capability or configuration (choose one, or leave blank):
+`STOL`, `Long Range`, `Short Runway`, `Heavy Lift`, `Medium Lift`, `Multi-Role`,
+`All-Weather`, `High Endurance`, `Aerial Refueling`, `Carrier Capable`, `Amphibious`,
+`Basic Trainer`, `Light Lift`, `Low Altitude`
+
+**`$#Tag 3`** — propulsion or airframe (choose one, or leave blank):
+`Twin Turboprop`, `Turboprop`, `Twin Engine`, `Quad Engine`, `Jet`, `High Wing`,
+`Low Wing`, `Rear Ramp`, `Side Door`, `Pressurized`, `Sensor Suite`,
+`Modular Cabin`, `Single Engine`, `Rotorcraft`
+
+See `scripts/README.md` for guidance on running the normalizer to validate new entries.
+
+
 
 -   [plane-alert-db.csv](plane-alert-db.csv)
 -   [plane-alert-pia.csv](plane-alert-pia.csv)
--   [plane_images.csv](plane_images.csv)
 
 Please note that other databases are automatically generated via [GitHub Actions](https://github.com/sdr-enthusiasts/plane-alert-db/actions/workflows/create_db_derivatives.yaml) and should not be manually edited.
 
