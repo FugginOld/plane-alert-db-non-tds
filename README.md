@@ -38,14 +38,6 @@ Based on these main databases, several derivative databases are created using a 
 -   [plane-alert-pol.csv](plane-alert-pol.csv) - Police Forces. (937)
 -   [plane-alert-gov.csv](plane-alert-gov.csv) - Governments, Gov Agencies and Dictators. (1744)
 
-A second version of each of the above lists contains up to 4 image links per aircraft. These lists are created in [GitHub action](https://github.com/sdr-enthusiasts/plane-alert-db/actions/workflows/create_db_derivatives.yaml) using the [plane_images.csv](plane_images.csv) database. **Please consider this experimental, do not come to rely on any of the image links**
-
--   [plane-alert-db-images.csv](plane-alert-db-images.csv)
--   [plane-alert-civ-images.csv](plane-alert-civ-images.csv)
--   [plane-alert-mil-images.csv](plane-alert-mil-images.csv)
--   [plane-alert-pol-images.csv](plane-alert-pol-images.csv)
--   [plane-alert-gov-images.csv](plane-alert-gov-images.csv)
-
 Note, we used to create a seperate list, `plane-alert-twitter-blocked.csv`, for use with Planefence's Twitter posting functionality. This list would prevent certain aircraft from being posted to Twitter in an attempt to keep the posting bot account from being banned. Since Twitter has now made it all but impossible for users to make bots for free, we've stopped creating this list.
 
 This [Dashboard](https://lookerstudio.google.com/reporting/46ff4328-09d3-4e65-ab5a-bd2ba27a18fd) contains details of the [main](https://github.com/sdr-enthusiasts/plane-alert-db/blob/main/plane-alert-db.csv) list.
