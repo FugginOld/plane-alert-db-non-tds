@@ -14,9 +14,6 @@ if __name__ == "__main__":
 
     logging.info("Reading the PIA csv file...")
     pia_df = pd.read_csv("plane-alert-pia.csv")
-
-    logging.info("Reading the images reference file...")
-    images_df = pd.read_csv("plane_images.csv")
     logging.info("All csv files read successfully.")
 
     plane_count_df = df["$ICAO"].drop_duplicates().reset_index(drop=True)
@@ -37,9 +34,6 @@ with open("readme.mustache", "r") as template:
                     "categories": category_unique_df.shape[0],
                     "plane_alert_db": df.shape[0],
                     "plane_alert_pia": pia_df.shape[0],
-                    "plane_alert_images": images_df.dropna(
-                        subset=["#ImageLink"], inplace=False
-                    ).shape[0],
                     "civ_count": df[df["#CMPG"] == "Civ"].shape[0],
                     "mil_count": df[df["#CMPG"] == "Mil"].shape[0],
                     "pol_count": df[df["#CMPG"] == "Pol"].shape[0],

@@ -85,13 +85,12 @@ Each aircraft carries up to three structured tags. The old tag fields carried fr
 
 - **`#CMPG`** — The operator-type split (`Mil` / `Civ` / `Gov` / `Pol`) is unchanged. It drives the derivative files (`plane-alert-mil.csv`, `plane-alert-civ.csv`, `plane-alert-gov.csv`, `plane-alert-pol.csv`) and is orthogonal to the taxonomy.
 - **`$ICAO`**, **`$Registration`**, **`$Operator`**, **`$Type`**, **`$ICAO Type`** — All identifier columns are unchanged.
-- **`$#Link`** — Reference links are unchanged.
 
 ---
 
 ## Impact on downstream consumers
 
-If you use the `Category` field (e.g. in `planefence.config` category-filter rules), you will need to update your filter values to use the new taxonomy names. The 53 old category names are no longer present in the database.
+If you use the `Category` field in your configuration rules, you will need to update your filter values to use the new taxonomy names. The 53 old category names are no longer present in the database.
 
 If you use the `#CMPG` field or the derivative files (`plane-alert-mil.csv`, etc.), no changes are needed.
 
@@ -106,8 +105,12 @@ pip install -r scripts/requirements.txt
 
 python scripts/normalize_aircraft_v5.py plane-alert-db.csv \
     --lookup scripts/aircraft_type_lookup.csv \
+    --aliases scripts/aircraft_type_aliases.csv
+
+# For a production-ready output without diagnostic columns:
+python scripts/normalize_aircraft_v5.py plane-alert-db.csv \
+    --lookup scripts/aircraft_type_lookup.csv \
     --aliases scripts/aircraft_type_aliases.csv \
-    --keep-link \
     --no-audit-cols
 ```
 

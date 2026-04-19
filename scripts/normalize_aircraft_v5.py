@@ -412,7 +412,7 @@ def ensure_fieldnames(reader_fieldnames: List[str], include_audit: bool = True) 
     return base
 
 
-def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Dict[str, str], keep_link: bool = False, no_audit_cols: bool = False) -> Tuple[str, str, Dict[str, int]]:
+def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Dict[str, str], no_audit_cols: bool = False) -> Tuple[str, str, Dict[str, int]]:
     delimiter = detect_delimiter(input_path)
     output_path, review_path = get_output_paths(input_path)
     stats = {
@@ -435,8 +435,6 @@ def process_file(input_path: str, lookup: Dict[str, Dict[str, str]], aliases: Di
             raise ValueError(f"No header row found in {input_path}")
 
         fieldnames = ensure_fieldnames(reader.fieldnames, include_audit=not no_audit_cols)
-        if not keep_link and "$#Link" in fieldnames:
-            fieldnames.remove("$#Link")
 
         writer = csv.DictWriter(outfile, fieldnames=fieldnames, delimiter=delimiter, extrasaction="ignore")
         review_writer = csv.DictWriter(reviewfile, fieldnames=fieldnames, delimiter=delimiter, extrasaction="ignore")
@@ -549,7 +547,6 @@ def main() -> int:
     parser.add_argument("inputs", nargs="+", help="Input CSV/TSV file(s) or glob(s)")
     parser.add_argument("--lookup", required=True, help="Verified lookup CSV/TSV")
     parser.add_argument("--aliases", help="Aliases CSV/TSV")
-    parser.add_argument("--keep-link", action="store_true", help="Keep $#Link column in outputs")
     parser.add_argument("--no-audit-cols", action="store_true",
                         help="Suppress the 13 diagnostic audit columns from outputs (suitable for production CSV)")
     args = parser.parse_args()
@@ -579,7 +576,7 @@ def main() -> int:
 
     for path in files:
         try:
-            output_path, review_path, stats = process_file(path, lookup, aliases, keep_link=args.keep_link, no_audit_cols=args.no_audit_cols)
+            output_path, review_path, stats = process_file(path, lookup, aliases, no_audit_cols=args.no_audit_cols)
         except Exception as exc:
             print(f"ERROR processing {path}: {exc}", file=sys.stderr)
             continue
