@@ -176,7 +176,7 @@ def search_aircraft(
     icao: str | None = Query(default=None, description="Partial ICAO hex (case-insensitive)"),
     registration: str | None = Query(default=None, description="Partial registration"),
     operator: str | None = Query(default=None, description="Partial operator name"),
-    type: str | None = Query(default=None, description="Partial aircraft type"),
+    aircraft_type: str | None = Query(default=None, alias="type", description="Partial aircraft type"),
     icao_type: str | None = Query(default=None, description="Exact ICAO type code"),
     cmpg: str | None = Query(default=None, description="Civ | Mil | Pol | Gov"),
     category: str | None = Query(default=None, description="Exact category name"),
@@ -199,8 +199,8 @@ def search_aircraft(
         df = df[df["Registration"].str.contains(registration, case=False, na=False)]
     if operator:
         df = df[df["Operator"].str.contains(operator, case=False, na=False)]
-    if type:
-        df = df[df["Type"].str.contains(type, case=False, na=False)]
+    if aircraft_type:
+        df = df[df["Type"].str.contains(aircraft_type, case=False, na=False)]
     if icao_type:
         df = df[df["ICAO Type"].str.fullmatch(icao_type, case=False, na=False)]
     if cmpg:
