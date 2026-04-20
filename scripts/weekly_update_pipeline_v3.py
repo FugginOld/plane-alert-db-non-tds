@@ -54,11 +54,11 @@ def run(cmd: list[str], cwd: Optional[Path] = None) -> None:
 def main() -> int:
     p = argparse.ArgumentParser(description="Weekly aircraft update pipeline with validation and auto-promotion")
     p.add_argument("--workspace", default=".")
-    p.add_argument("--normalizer", default="normalize_aircraft_v5.py")
-    p.add_argument("--alias-expander", default="expand_aircraft_aliases_v2.py")
-    p.add_argument("--validator", default="validate_aircraft_references.py")
-    p.add_argument("--promoter", default="auto_promote_aircraft_references.py")
-    p.add_argument("--sync-script", default="sync_public_aircraft_sources.py")
+    p.add_argument("--normalizer", default="scripts/normalize_aircraft_v5.py")
+    p.add_argument("--alias-expander", default="scripts/expand_aircraft_aliases_v2.py")
+    p.add_argument("--validator", default="scripts/validate_aircraft_references.py")
+    p.add_argument("--promoter", default="scripts/auto_promote_aircraft_references.py")
+    p.add_argument("--sync-script", default="scripts/sync_public_aircraft_sources.py")
     p.add_argument("--seed-aliases", default="taxonomy/aircraft_aliases.csv")
     p.add_argument("--seed-lookup", default="taxonomy/aircraft_lookup_seed.csv")
     p.add_argument("--cache-dir", default="cache/public_sources")
@@ -73,6 +73,8 @@ def main() -> int:
     cache_dir = (ws / args.cache_dir).resolve()
     outdir = (ws / "build" / "weekly_update").resolve()
     outdir.mkdir(parents=True, exist_ok=True)
+    published_aliases = ws / "taxonomy" / "aircraft_type_aliases.csv"
+    published_lookup = ws / "taxonomy" / "aircraft_type_lookup.csv"
 
     if not args.skip_sync:
         run([sys.executable, str(ws / args.sync_script), "--cache-dir", str(cache_dir)], cwd=ws)
@@ -113,9 +115,6 @@ def main() -> int:
         "--output-dir", str(outdir),
     ]
     run(promote_cmd, cwd=ws)
-
-    published_aliases = ws / "taxonomy" / "aircraft_type_aliases.csv"
-    published_lookup = ws / "taxonomy" / "aircraft_type_lookup.csv"
 
     aliases_changed = replace_if_changed(
         outdir / "aircraft_type_aliases_promoted_for_normalizer.csv",
