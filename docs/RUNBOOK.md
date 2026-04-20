@@ -8,7 +8,7 @@ taxonomy used to normalise the plane-alert-db dataset.
 ## Directory contract
 
 | Path | Role | Committed? |
-|---|---|---|
+| --- | --- | --- |
 | `data/` | Operational CSV datasets (source-of-truth aircraft records) | ✅ Yes |
 | `taxonomy/` | Taxonomy reference files (lookup seed, canonical lookup/aliases) | ✅ Yes |
 | `cache/public_sources/` | Downloaded public aircraft database snapshots | ❌ No (gitignored) |
@@ -23,7 +23,7 @@ taxonomy used to normalise the plane-alert-db dataset.
 ### taxonomy/ — taxonomy reference files
 
 | File | Role | Mutated by |
-|---|---|---|
+| --- | --- | --- |
 | `aircraft_lookup_seed.csv` | Manually curated ICAO designator → taxonomy mapping. Never auto-overwritten. | Human editors |
 | `aircraft_aliases.csv` | Manually curated free-text alias → ICAO designator mapping. | Human editors |
 | `aircraft_type_lookup.csv` | Published canonical lookup. Starts as a copy of the seed; grows via auto-promotion each week. | `weekly_update_pipeline_v3.py` |
@@ -33,7 +33,7 @@ taxonomy used to normalise the plane-alert-db dataset.
 ### data/ — operational aircraft records
 
 | File | Role |
-|---|---|
+| --- | --- |
 | `plane-alert-db.csv` | Main aircraft database (source of truth). Edit this file directly. |
 | `plane-alert-pia.csv` | Privacy ICAO Address (PIA) aircraft. |
 | `plane-alert-wip.csv` | Work-in-progress aircraft candidates. |
@@ -57,7 +57,7 @@ The weekly pipeline (`.github/workflows/weekly_taxonomy_update.yml`) runs every 
 
 **Pipeline stages:**
 
-```
+```text
 sync_public_aircraft_sources.py
     ↓ downloads → cache/public_sources/
 weekly_update_pipeline_v3.py
@@ -79,17 +79,32 @@ weekly_update_pipeline_v3.py
     ├─ publishes if changed:
     │    taxonomy/aircraft_type_lookup.csv
     │    taxonomy/aircraft_type_aliases.csv
-    └─ normalize_aircraft_v5.py (only runs when canonical files changed)
+    └─ normalize_aircraft_v5.py (only runs when canonical files changed, or --force-refresh)
          reads  taxonomy/aircraft_type_lookup.csv
                  taxonomy/aircraft_type_aliases.csv
-         writes data/plane-alert-db.csv (in-place normalised)
-                 data/plane-alert-pia.csv
+         writes every data/plane-alert-*.csv in place
+                except data/plane-alert-categories.csv
+                and data/plane-alert-search-terms-to-do.csv
+                (for example: data/plane-alert-db.csv, data/plane-alert-pia.csv,
+                 data/plane-alert-wip.csv, and any existing civ/mil/pol/gov derivatives)
 ```
+
+In GitHub Actions, the weekly workflow commits updates for:
+
+- `taxonomy/aircraft_type_lookup.csv`
+- `taxonomy/aircraft_type_aliases.csv`
+- `data/plane-alert-db.csv`
+- `data/plane-alert-pia.csv`
+- `data/plane-alert-wip.csv`
+
+Derivative outputs (`data/plane-alert-civ.csv`, `data/plane-alert-mil.csv`,
+`data/plane-alert-pol.csv`, `data/plane-alert-gov.csv`, and
+`data/plane-alert-categories.csv`) are produced by derivative-generation workflows.
 
 ### Confidence thresholds
 
 | Queue | Default threshold | Meaning |
-|---|---|---|
+| --- | --- | --- |
 | Lookup promotion | 0.70 | Row added to canonical lookup only if scored ≥ 0.70 |
 | Alias promotion | 0.75 | Alias added to canonical aliases only if scored ≥ 0.75 |
 
@@ -199,7 +214,7 @@ Use `--strict` to treat Category violations in data files as hard errors.
 After each weekly run, build artefacts land in `build/weekly_update/`:
 
 | File | Contents |
-|---|---|
+| --- | --- |
 | `aircraft_type_lookup_review.csv` | Lookup rows that need human review |
 | `aircraft_type_aliases_review.csv` | Alias rows that need human review |
 | `aircraft_type_lookup_promoted.csv` | Final promoted lookup (becomes canonical) |
@@ -235,6 +250,7 @@ edit the canonical files to trigger re-normalisation.
 
 Large review queues mean many ICAO types in the lookup have no matching evidence in the
 cached public metadata. Options:
+
 - Re-run `sync_public_aircraft_sources.py` to refresh the cache.
 - Manually review `aircraft_type_lookup_review.csv` and add entries directly to the seed.
 - Lower the lookup threshold (`--lookup-threshold 0.5`) with caution.
@@ -246,12 +262,14 @@ cached public metadata. Options:
 ### Rollback a canonical reference update
 
 The weekly pipeline backs up the canonical files before overwriting them:
-```
+
+```text
 taxonomy/aircraft_type_lookup.csv.<timestamp>.bak
 taxonomy/aircraft_type_aliases.csv.<timestamp>.bak
 ```
 
 To restore:
+
 ```bash
 cp taxonomy/aircraft_type_lookup.csv.20260419T040000Z.bak taxonomy/aircraft_type_lookup.csv
 cp taxonomy/aircraft_type_aliases.csv.20260419T040000Z.bak taxonomy/aircraft_type_aliases.csv
@@ -260,7 +278,8 @@ cp taxonomy/aircraft_type_aliases.csv.20260419T040000Z.bak taxonomy/aircraft_typ
 ### Rollback a data file normalisation
 
 Data files are similarly backed up before in-place replacement:
-```
+
+```text
 data/plane-alert-db.csv.<timestamp>.bak
 ```
 
