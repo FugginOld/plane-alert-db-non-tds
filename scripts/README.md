@@ -7,7 +7,7 @@ This folder contains all automation scripts for the aircraft taxonomy pipeline.
 All scripts assume they are run from the **repository root** (not from inside `scripts/`).
 
 | Path | Role |
-|---|---|
+| --- | --- |
 | `data/` | Operational CSV datasets — the source-of-truth aircraft records. |
 | `taxonomy/` | Taxonomy reference files (lookup seed, canonical lookup / aliases). |
 | `cache/public_sources/` | Downloaded public aircraft database snapshots (gitignored). |
@@ -18,7 +18,7 @@ All scripts assume they are run from the **repository root** (not from inside `s
 ### Data-hygiene / CI scripts
 
 | Script | Purpose |
-|---|---|
+| --- | --- |
 | `check_main_databases.py` | Validates `data/plane-alert-db.csv` — checks for duplicate ICAOs and invalid hex codes. |
 | `check_categories.py` | Verifies that every Category in `data/plane-alert-db.csv` appears in `data/plane-alert-categories.csv`. |
 | `check_invalid_derivatives.py` | Used by CI to detect hand-edited derivative files. |
@@ -27,7 +27,7 @@ All scripts assume they are run from the **repository root** (not from inside `s
 ### Publishing / derivative scripts
 
 | Script | Purpose |
-|---|---|
+| --- | --- |
 | `create_db_derivatives.py` | Splits `data/plane-alert-db.csv` by `#CMPG` into `data/plane-alert-{civ,mil,pol,gov}.csv`. |
 | `export_categories.py` | Exports the unique Category list to `data/plane-alert-categories.csv`. |
 | `update_readme.py` | Regenerates `README.md` from `readme.mustache` with live row counts. |
@@ -35,7 +35,7 @@ All scripts assume they are run from the **repository root** (not from inside `s
 ### Taxonomy normalisation pipeline scripts
 
 | Script | Purpose |
-|---|---|
+| --- | --- |
 | `normalize_aircraft_v5.py` | Core normaliser. Maps each aircraft's `$ICAO Type` / `$Type` field to the canonical taxonomy. |
 | `expand_aircraft_aliases_v2.py` | Expands the alias seed against public metadata to produce a broader alias set. |
 | `validate_aircraft_references.py` | Scores lookup / alias rows against cached public metadata. Produces review queues. |
@@ -56,7 +56,7 @@ This script processes one or more CSV files and produces:
 ### Taxonomy reference files (live in `taxonomy/`)
 
 | File | Purpose |
-|---|---|
+| --- | --- |
 | `aircraft_type_lookup.csv` | Published canonical lookup. Maps ICAO type designators to taxonomy values. Required columns: `match_key`, `normalized_type`, `category`, `tag1`, `tag2`, `tag3`. |
 | `aircraft_type_aliases.csv` | Published canonical aliases. Maps free-text spellings to a canonical `match_key`. Required columns: `raw_value`, `match_key`. |
 | `aircraft_lookup_seed.csv` | Manually curated base lookup (never auto-overwritten). |

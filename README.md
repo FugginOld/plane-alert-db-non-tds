@@ -7,27 +7,27 @@ This project consists of lists of 'interesting' aircraft, formatted as CSV files
 
 ## TOC <!-- omit in toc -->
 
--   [Current Content](#current-content)
--   [Description of Categories](#description-of-categories)
--   [CSV Format](#csv-format)
--   [Contributing](#contributing)
--   [Disclaimer, excuses and dodges](#disclaimer-excuses-and-dodges)
--   [Data Sources](#data-sources)
+- [Current Content](#current-content)
+- [Description of Categories](#description-of-categories)
+- [CSV Format](#csv-format)
+- [Contributing](#contributing)
+- [Disclaimer, excuses and dodges](#disclaimer-excuses-and-dodges)
+- [Data Sources](#data-sources)
 
 ## Current Content
 
 There currently are about **15959** unique aircraft in **53** categories found in this repository. This [Dashboard](https://lookerstudio.google.com/reporting/94a654de-8cb5-4e7a-a3e5-e4ce25e47f37) contains details of the main list.
 These aircraft are divided into two main databases:
 
--   [plane-alert-db.csv](data/plane-alert-db.csv) - A list of interesting aircraft with tags, categories and links. (15959)
--   [plane-alert-pia.csv](data/plane-alert-pia.csv): A list that contains PIA planes. (94)
+- [plane-alert-db.csv](data/plane-alert-db.csv) - A list of interesting aircraft with tags, categories and links. (15959)
+- [plane-alert-pia.csv](data/plane-alert-pia.csv): A list that contains PIA planes. (94)
 
 Based on these main databases, several derivative databases are created using a [GitHub action](https://github.com/sdr-enthusiasts/plane-alert-db/actions/workflows/create_db_derivatives.yaml):
 
--   [plane-alert-civ.csv](data/plane-alert-civ.csv) - Civilian Registered Aircraft, includes Historic and Distinctive. (4536)
--   [plane-alert-mil.csv](data/plane-alert-mil.csv) - Military Only. (8742)
--   [plane-alert-pol.csv](data/plane-alert-pol.csv) - Police Forces. (937)
--   [plane-alert-gov.csv](data/plane-alert-gov.csv) - Governments, Gov Agencies and Dictators. (1744)
+- [plane-alert-civ.csv](data/plane-alert-civ.csv) - Civilian Registered Aircraft, includes Historic and Distinctive. (4536)
+- [plane-alert-mil.csv](data/plane-alert-mil.csv) - Military Only. (8742)
+- [plane-alert-pol.csv](data/plane-alert-pol.csv) - Police Forces. (937)
+- [plane-alert-gov.csv](data/plane-alert-gov.csv) - Governments, Gov Agencies and Dictators. (1744)
 
 This [Dashboard](https://lookerstudio.google.com/reporting/46ff4328-09d3-4e65-ab5a-bd2ba27a18fd) contains details of the [main](https://github.com/sdr-enthusiasts/plane-alert-db/blob/main/plane-alert-db.csv) list.
 
@@ -72,15 +72,15 @@ Each aircraft also carries up to three structured tags:
 
 The list takes the form:
 
-| $ICAO  | $Registration | $Operator           | $Type               | $ICAO Type | #CMPG | $Tag 1   | $#Tag 2   | $#Tag 3 | Category |
-| ------ | ------------- | ------------------- | ------------------- | ---------- | ----- | -------- | --------- | ------- | -------- |
-| 502C5C | YL-KSH        | Baltic Bees display team | Aero L-39C Albatros | L39       | Civ   | Training | Multi-Role | Jet    | Trainer  |
+| $ICAO  | $Registration | $Operator                | $Type               | $ICAO Type | #CMPG | $Tag 1   | $#Tag 2    | $#Tag 3 | Category |
+| ------ | ------------- | ------------------------ | ------------------- | ---------- | ----- | -------- | ---------- | ------- | -------- |
+| 502C5C | YL-KSH        | Baltic Bees display team | Aero L-39C Albatros | L39        | Civ   | Training | Multi-Role | Jet     | Trainer  |
 
 Column prefix conventions:
 
--   `$` - Tweet this column as #hashtag.
--   `#` - Hidden from display (the ICAO field is always shown regardless).
--   `$#` - Hidden from display and tweeted as a #hashtag.
+- `$` - Tweet this column as #hashtag.
+- `#` - Hidden from display (the ICAO field is always shown regardless).
+- `$#` - Hidden from display and tweeted as a #hashtag.
 
 ## Contributing
 
@@ -97,21 +97,21 @@ This is not intended to be a definitive list, especially when it comes to aircra
 
 ## Data Sources
 
-This data has been gathered from far too many sources to mention, but some sites have been _really_ useful:
+This data has been gathered from far too many sources to mention, but some sites have been *really* useful:
 
--   <https://github.com/iatacodes/whatisflying-db>
--   <https://github.com/The-CFR-Project/whatisflying-db>
--   <https://www.flightdb.net/index.php>
--   <http://www.rotorspot.nl/>
--   <http://www.dtvmovements.co.uk/>
--   <http://www.ads-b.nl/>
--   <https://www.live-military-mode-s.eu/>
--   <https://dictatoralert.org/>
--   <http://www.j-hangarspace.jp/>
--   <https://scramble.nl/>
--   <https://www.foxtrotcharlie.ovh/>
--   <https://www.planelogger.com/>
--   <https://www.jetphotos.com/>
+- <https://github.com/iatacodes/whatisflying-db>
+- <https://github.com/The-CFR-Project/whatisflying-db>
+- <https://www.flightdb.net/index.php>
+- <http://www.rotorspot.nl/>
+- <http://www.dtvmovements.co.uk/>
+- <http://www.ads-b.nl/>
+- <https://www.live-military-mode-s.eu/>
+- <https://dictatoralert.org/>
+- <http://www.j-hangarspace.jp/>
+- <https://scramble.nl/>
+- <https://www.foxtrotcharlie.ovh/>
+- <https://www.planelogger.com/>
+- <https://www.jetphotos.com/>
 
 ## LICENSE
 
