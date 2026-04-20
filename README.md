@@ -110,6 +110,6 @@ A list of contributors to the original upstream database can be found at <https:
 A list of contributors to this derivative work can be found at <https://github.com/FugginOld/aircraft-taxonomy-db/graphs/contributors>
 
 This Database is made available under the Open Database License: <https://opendatacommons.org/licenses/odbl/1.0/>.
-Any rights in individual contents of the database are licensed under the Database Contents License: <https://opendatacommons.org/licenses/dbcl/1.0/>
+Any rights in individual contents of the database are licensed under the Database Contents License: <https://opendatacommons.org/licenses/dbcl/1.0/>.
 
 License terms cannot be altered without the prior permission in writing of a majority of the SDR-Enthusiasts GitHub Organization.
