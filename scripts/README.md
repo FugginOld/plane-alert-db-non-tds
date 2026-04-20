@@ -103,6 +103,7 @@ python scripts/normalize_aircraft_v5.py data/plane-alert-db.csv \
 ```
 
 After running, inspect `data/plane-alert-db_review.csv`. For each unresolved row:
+
 1. Add its ICAO type to `taxonomy/aircraft_type_lookup.csv` (and the seed), or
 2. Add an alias for the free-text `$Type` value to `taxonomy/aircraft_type_aliases.csv` (and the seed).
 

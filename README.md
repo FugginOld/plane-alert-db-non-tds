@@ -3,7 +3,7 @@
 This project consists of lists of 'interesting' aircraft, formatted as CSV files.
 
 > **Warning**
-> Please only suggest/make any changes to the [plane-alert-db.csv](plane-alert-db.csv) and [plane-alert-pia.csv](plane-alert-pia.csv) files on GitHub - all other files are generated from these files, and if you do not make your changes there, they will be overwritten and lost. Additionally, it is **not recommended** to edit the CSV files in Microsoft Excel, as Excel will attempt to "fix" some ICAO hexes and other fields. It's better to use a code editor such as VS Studio Code—you can access the web version of Code by pressing the period key . when viewing the file you wish to edit.
+> Please only suggest/make any changes to the [plane-alert-db.csv](data/plane-alert-db.csv) and [plane-alert-pia.csv](data/plane-alert-pia.csv) files on GitHub - all other files are generated from these files, and if you do not make your changes there, they will be overwritten and lost. Additionally, it is **not recommended** to edit the CSV files in Microsoft Excel, as Excel will attempt to "fix" some ICAO hexes and other fields. It's better to use a code editor such as VS Studio Code—you can access the web version of Code by pressing the period key . when viewing the file you wish to edit.
 
 ## TOC <!-- omit in toc -->
 
@@ -19,15 +19,15 @@ This project consists of lists of 'interesting' aircraft, formatted as CSV files
 There currently are about **15959** unique aircraft in **53** categories found in this repository. This [Dashboard](https://lookerstudio.google.com/reporting/94a654de-8cb5-4e7a-a3e5-e4ce25e47f37) contains details of the main list.
 These aircraft are divided into two main databases:
 
--   [plane-alert-db.csv](plane-alert-db.csv) - A list of interesting aircraft with tags, categories and links. (15959)
--   [plane-alert-pia.csv](plane-alert-pia.csv): A list that contains PIA planes. (94)
+-   [plane-alert-db.csv](data/plane-alert-db.csv) - A list of interesting aircraft with tags, categories and links. (15959)
+-   [plane-alert-pia.csv](data/plane-alert-pia.csv): A list that contains PIA planes. (94)
 
 Based on these main databases, several derivative databases are created using a [GitHub action](https://github.com/sdr-enthusiasts/plane-alert-db/actions/workflows/create_db_derivatives.yaml):
 
--   [plane-alert-civ.csv](plane-alert-civ.csv) - Civilian Registered Aircraft, includes Historic and Distinctive. (4536)
--   [plane-alert-mil.csv](plane-alert-mil.csv) - Military Only. (8742)
--   [plane-alert-pol.csv](plane-alert-pol.csv) - Police Forces. (937)
--   [plane-alert-gov.csv](plane-alert-gov.csv) - Governments, Gov Agencies and Dictators. (1744)
+-   [plane-alert-civ.csv](data/plane-alert-civ.csv) - Civilian Registered Aircraft, includes Historic and Distinctive. (4536)
+-   [plane-alert-mil.csv](data/plane-alert-mil.csv) - Military Only. (8742)
+-   [plane-alert-pol.csv](data/plane-alert-pol.csv) - Police Forces. (937)
+-   [plane-alert-gov.csv](data/plane-alert-gov.csv) - Governments, Gov Agencies and Dictators. (1744)
 
 This [Dashboard](https://lookerstudio.google.com/reporting/46ff4328-09d3-4e65-ab5a-bd2ba27a18fd) contains details of the [main](https://github.com/sdr-enthusiasts/plane-alert-db/blob/main/plane-alert-db.csv) list.
 

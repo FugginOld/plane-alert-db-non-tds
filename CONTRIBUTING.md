@@ -81,8 +81,8 @@ See `scripts/README.md` for guidance on running the normalizer to validate new e
 
 
 
--   [plane-alert-db.csv](plane-alert-db.csv)
--   [plane-alert-pia.csv](plane-alert-pia.csv)
+-   [plane-alert-db.csv](data/plane-alert-db.csv)
+-   [plane-alert-pia.csv](data/plane-alert-pia.csv)
 
 Please note that other databases are automatically generated via [GitHub Actions](https://github.com/sdr-enthusiasts/plane-alert-db/actions/workflows/create_db_derivatives.yaml) and should not be manually edited.
 
