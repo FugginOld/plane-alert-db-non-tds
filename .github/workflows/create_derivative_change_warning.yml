@@ -34,16 +34,10 @@ jobs:
           issue_number=`cat issue_number`
           echo "issue_number=${issue_number}" >> "${GITHUB_OUTPUT}"
 
-      - if: steps.changed.outputs.derivative_files_changed == 'true'
-        run: |
-          echo "WARNING_MSG<<EOF" >> $GITHUB_ENV
-          echo "$(cat READ_BEFORE_MAKING_CHANGES.md | tail -n +3)" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
       - name: Post derivative databases change warning
         if: steps.changed.outputs.derivative_files_changed == 'true'
         uses: thollander/actions-comment-pull-request@v3.0.1
         with:
-          message: |
-            ${{ env.WARNING_MSG }}
+          message_path: READ_BEFORE_MAKING_CHANGES.md
           comment_tag: execution
           pr_number: ${{ steps.changed.outputs.issue_number }}
