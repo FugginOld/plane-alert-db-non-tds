@@ -1,0 +1,32 @@
+[Unit]
+Description=Plane Alert DB weekly taxonomy update
+Documentation=https://github.com/FugginOld/plane-alert-db-normalized/blob/main/docs/DOCKER.md
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+
+# Path to the cloned repository on the host.
+# Create /etc/plane-alert-weekly.env and set REPO_DIR before enabling.
+# Example: REPO_DIR=/opt/plane-alert-db-normalized
+EnvironmentFile=/etc/plane-alert-weekly.env
+
+# Remove the container after the run completes.
+# Volatile directories are bind-mounted so any changes are persisted on the host.
+ExecStart=/usr/bin/docker run --rm \
+    --name plane-alert-weekly \
+    -v ${REPO_DIR}/data:/workspace/data \
+    -v ${REPO_DIR}/taxonomy:/workspace/taxonomy \
+    -v ${REPO_DIR}/cache:/workspace/cache \
+    -v ${REPO_DIR}/build:/workspace/build \
+    -v ${REPO_DIR}/logs:/workspace/logs \
+    plane-alert-db:latest \
+    /workspace/docker/weekly_update.sh
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=plane-alert-weekly
+
+[Install]
+WantedBy=multi-user.target
