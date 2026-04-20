@@ -1,0 +1,13 @@
+[Unit]
+Description=Plane Alert DB weekly taxonomy update timer
+Documentation=docs/DOCKER.md
+
+[Timer]
+# Run every Sunday at 03:15 local time (matches scripts/aircraft_update_cron.example).
+OnCalendar=Sun *-*-* 03:15:00
+AccuracySec=1min
+# If the system was off at the scheduled time, run on the next startup.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,17 @@
+# Runtime-generated artifacts (not needed in the image)
+build/
+logs/
+cache/public_sources/*.csv
+cache/public_sources/*.tsv
+cache/public_sources/*.pdf
+cache/public_sources/*.html
+cache/public_sources/manifest.json
+*.bak
+
+# Development and system noise
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+.git/
+.github/
