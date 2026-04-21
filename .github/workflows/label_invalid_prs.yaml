@@ -73,8 +73,7 @@ jobs:
                });
              } catch (err) {
                if (err.status === 404) {
-                 console.log("Label 'invalid' was not present on the issue, nothing to remove.");
+                 console.log("Label not found, nothing to remove.");
                } else {
                  throw err;
                }
-             }
