@@ -10,8 +10,6 @@ updates:
       day: "saturday"
       time: "00:00"
       timezone: "Etc/UTC"
-    assignees:
-      - "fredclausen"
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -21,5 +19,3 @@ updates:
       day: "saturday"
       time: "00:00"
       timezone: "Etc/UTC"
-    assignees:
-      - "fredclausen"
